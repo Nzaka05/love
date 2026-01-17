@@ -751,9 +751,11 @@
             updateMessage();
             startAutoPlay();
             
-            audio.play().catch(e => console.log("Audio play failed:", e));
-            musicPlaying = true;
-            musicBtn.textContent = '🔊';
+            // Play the audio immediately
+            audio.play().then(() => {
+                musicPlaying = true;
+                musicBtn.textContent = '🔊';
+            }).catch(e => console.log("Audio play failed:", e));
         }
 
         // Event listeners
