@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Sharleen! 🎂</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(135deg, #ec4899, #a855f7, #6366f1);
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        /* Background slideshow */
+        .bg-slideshow {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .bg-slide {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            background: linear-gradient(135deg, #fb7185, #a855f7);
+        }
+
+        .bg-slide.active {
+            opacity: 1;
+        }
+
+        .bg-slide::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(236, 72, 153, 0.6), rgba(168, 85, 245, 0.6), rgba(99, 102, 241, 0.6));
+            z-index: 1;
+        }
+
+        .bg-slide img {
+            width: auto; /* Maintain aspect ratio */
+            height: 100%; /* Stretch to fill the height */
+            max-height: 100%; /* Prevent overflow */
+        }
+
+        @media (max-width: 768px) {
+            .bg-slide img {
+                width: 100%; /* Stretch to fill the width on smaller screens */
+                height: auto; /* Maintain aspect ratio */
+            }
+        }
+
+        .placeholder-img {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 14px;
+        }
+
+        .camera-icon {
+            width: 120px;
+            height: 120px;
+            margin-bottom: 20px;
+        }
+
+        /* Particles */
+        .particle {
+            position: absolute;
+            pointer-events: none;
+            z-index: 20;
+            animation: float-up 4s linear forwards;
+        }
+
+        @keyframes float-up {
+            from {
+                bottom: 0;
+                opacity: 1;
+            }
+            to {
+                bottom: 100%;
+                transform: translateY(-500px);
+                opacity: 0;
+            }
+        }
+
+        .heart-particle {
+            color: #fda4af;
+            font-size: 24px;
+        }
+
+        .sparkle-particle {
+            color: #fef08a;
+            font-size: 20px;
+        }
+
+        /* Click hearts */
+        .click-heart {
+            position: absolute;
+            color: #f87171;
+            font-size: 28px;
+            pointer-events: none;
+            z-index: 20;
+            animation: ping 1.5s ease-out forwards;
+        }
+
+        @keyframes ping {
+            0% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+
+        /* Confetti */
+        .confetti {
+            position: absolute;
+            z-index: 30;
+            width: 10px;
+            height: 10px;
+            border-radius: 2px;
+        }
+
+        /* Controls */
+        .controls {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 50;
+            display: none;
+            gap: 10px;
+        }
+
+        .controls.show {
+            display: flex;
+        }
+
+        .control-btn {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: none;
+            padding: 12px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: white;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: scale(1.1);
+        }
+
+        /* Main content */
+        .content {
+            position: relative;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 20px;
+        }
+
+        /* Initial screen */
+        .initial-screen {
+            text-align: center;
+            max-width: 700px;
+        }
+
+        .name-title {
+            font-size: clamp(60px, 15vw, 140px);
+            font-weight: bold;
+            color: white;
+            text-shadow: 4px 4px 20px rgba(0, 0, 0, 0.3);
+            margin-bottom: 40px;
+            position: relative;
+            display: inline-block;
+            padding: 0 40px;
+        }
+
+        .star-icon {
+            position: absolute;
+            color: #fef08a;
+            animation: spin 4s linear infinite;
+        }
+
+        .star-1 {
+            top: -30px;
+            left: -30px;
+            font-size: 60px;
+        }
+
+        .star-2 {
+            bottom: -20px;
+            right: -20px;
+            font-size: 50px;
+            animation-duration: 5s;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .info-box {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            padding: 40px;
+            border-radius: 30px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            margin-bottom: 40px;
+        }
+
+        .info-text {
+            font-size: clamp(24px, 4vw, 36px);
+            color: white;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .sub-text {
+            font-size: clamp(16px, 3vw, 20px);
+            color: #ffc0cb;
+        }
+
+        .gift-btn {
+            background: linear-gradient(135deg, #ec4899, #a855f7);
+            color: white;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            padding: 24px 60px;
+            border-radius: 50px;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .gift-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 20px 60px rgba(236, 72, 153, 0.5);
+        }
+
+        .tip-text {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 14px;
+            margin-top: 30px;
+        }
+
+        /* Message screen */
+        .message-screen {
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        .message-box {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            padding: clamp(40px, 8vw, 80px);
+            border-radius: 30px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .message-text {
+            font-size: clamp(28px, 6vw, 56px);
+            color: white;
+            line-height: 1.5;
+            text-align: center;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .final-hearts {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 40px;
+        }
+
+        .final-hearts .heart {
+            color: #fca5a5;
+            font-size: 48px;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        .final-hearts .heart:nth-child(2) {
+            font-size: 64px;
+            animation-delay: 0.2s;
+        }
+
+        .final-hearts .heart:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* Progress dots */
+        .progress-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 30px;
+        }
+
+        .dot {
+            height: 8px;
+            width: 8px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+            transition: all 0.5s;
+            cursor: pointer;
+        }
+
+        .dot:hover {
+            background: rgba(255, 255, 255, 0.5);
+            transform: scale(1.25);
+        }
+
+        .dot.active {
+            background: white;
+            width: 32px;
+        }
+
+        /* Navigation */
+        .navigation {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: none;
+            padding: 16px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: white;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: scale(1.1);
+        }
+
+        .message-counter {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .nav-tip {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 14px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        /* Decorative elements */
+        .deco-sparkle, .deco-heart {
+            position: absolute;
+            z-index: 20;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .deco-sparkle {
+            color: #fef08a;
+            font-size: 40px;
+        }
+
+        .deco-heart {
+            color: #fda4af;
+            font-size: 40px;
+        }
+
+        .top-left { top: 30px; left: 30px; }
+        .top-right { top: 30px; right: 30px; animation-delay: 0.5s; }
+        .bottom-left { bottom: 30px; left: 30px; animation-delay: 0.3s; }
+        .bottom-right { bottom: 30px; right: 30px; animation-delay: 0.7s; }
+
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <div class="container" id="container">
+        <!-- Background Slideshow -->
+        <div class="bg-slideshow" id="bgSlideshow">
+            <!-- Slides will be generated by JavaScript -->
+        </div>
+
+        <!-- Controls -->
+        <div class="controls" id="controls">
+            <button class="control-btn" id="pauseBtn" title="Pause auto-play">⏸️</button>
+            <button class="control-btn" id="musicBtn" title="Toggle music">🔊</button>
+        </div>
+
+        <!-- Decorative elements -->
+        <div class="deco-sparkle top-left">✨</div>
+        <div class="deco-sparkle top-right">✨</div>
+        <div class="deco-heart bottom-left">❤️</div>
+        <div class="deco-heart bottom-right">❤️</div>
+
+        <!-- Main Content -->
+        <div class="content">
+            <!-- Initial Screen -->
+            <div class="initial-screen" id="initialScreen">
+                <div style="position: relative; margin-bottom: 40px;">
+                    <div class="star-icon star-1">⭐</div>
+                    <h1 class="name-title">Sharleen</h1>
+                    <div class="star-icon star-2">⭐</div>
+                </div>
+
+                <div class="info-box">
+                    <p class="info-text">
+                        Someone special has a birthday surprise for you...
+                    </p>
+                    <p class="sub-text">
+                        Click the gift to reveal your birthday message! 🎁
+                    </p>
+                </div>
+
+                <button class="gift-btn" id="giftBtn">
+                    <span style="font-size: 40px;">🎁</span>
+                    Open Your Surprise
+                    <span style="font-size: 40px;">✨</span>
+                </button>
+
+                <p class="tip-text">💡 Tip: Click anywhere on the screen for hearts! 💡</p>
+            </div>
+
+            <!-- Message Screen -->
+            <div class="message-screen hidden" id="messageScreen">
+                <div class="message-box" id="messageBox">
+                    <p class="message-text" id="messageText"></p>
+                    <div class="final-hearts hidden" id="finalHearts">
+                        <span class="heart">❤️</span>
+                        <span class="heart">❤️</span>
+                        <span class="heart">❤️</span>
+                    </div>
+                </div>
+
+                <div class="progress-dots" id="progressDots"></div>
+
+                <div class="navigation">
+                    <button class="nav-btn" id="prevBtn">‹</button>
+                    <div class="message-counter" id="messageCounter">1 / 10</div>
+                    <button class="nav-btn" id="nextBtn">›</button>
+                </div>
+
+                <p class="nav-tip" id="navTip">⏸️ Click pause to navigate manually</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio -->
+    <audio id="audio" loop>
+        <source src="happy birthday.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // Configuration
+        const images = [
+            { id: 1, placeholder: "photo 1.jpeg" },
+            { id: 2, placeholder: "photo 2.jpg" },
+            { id: 3, placeholder: "photo 3.jpg" },
+            { id: 4, placeholder: "photo 4.jpg" },
+            { id: 5, placeholder: "photo 5.jpg" },
+            { id: 6, placeholder: "photo 6.jpg" }
+        ];
+
+        const extensions = {
+            1: "jpeg",
+            2: "jpg",
+            3: "jpg",
+            4: "jpg",
+            5: "jpg",
+            6: "jpg"
+        };
+
+        const messages = [
+            "Happy Birthday, Sharleen! 🎂",
+            "Today, I celebrate an incredible person...",
+            "Someone with the kindest heart",
+            "Whose smile lights up every room",
+            "Who makes the world brighter just by being in it",
+            "You deserve all the happiness today and always",
+            "May this year bring you endless joy, love and laughter",
+            "Beautiful moments and wonderful surprises",
+            "Here's to you, Sharleen - an amazing soul! ✨",
+            "Wishing you the most magical birthday ever! 🎉",
+            "PS> I love you so much! ❤️ also I will gift you a surprise later!",
+            "Dont worry about the surprise now, enjoy your day! 😘"
+        ];
+
+        // State
+        let currentImage = 0;
+        let currentMessage = 0;
+        let autoPlay = true;
+        let musicPlaying = false;
+        let messageInterval = null;
+
+        // Elements
+        const container = document.getElementById('container');
+        const bgSlideshow = document.getElementById('bgSlideshow');
+        const controls = document.getElementById('controls');
+        const initialScreen = document.getElementById('initialScreen');
+        const messageScreen = document.getElementById('messageScreen');
+        const messageText = document.getElementById('messageText');
+        const messageCounter = document.getElementById('messageCounter');
+        const progressDots = document.getElementById('progressDots');
+        const finalHearts = document.getElementById('finalHearts');
+        const navTip = document.getElementById('navTip');
+        const audio = document.getElementById('audio');
+        const giftBtn = document.getElementById('giftBtn');
+        const pauseBtn = document.getElementById('pauseBtn');
+        const musicBtn = document.getElementById('musicBtn');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+
+        // Initialize background slideshow
+        function initSlideshow() {
+            images.forEach((img, index) => {
+                const slide = document.createElement('div');
+                slide.className = `bg-slide ${index === 0 ? 'active' : ''}`;
+                const ext = extensions[img.id];
+                slide.innerHTML = `<img src="images/photo ${img.id}.${ext}" style="width: 100%; height: 100%; object-fit: cover;" alt="Memory ${img.id}">`;
+                bgSlideshow.appendChild(slide);
+            });
+        }
+
+        // Background slideshow rotation
+        function rotateSlideshow() {
+            const slides = document.querySelectorAll('.bg-slide');
+            slides[currentImage].classList.remove('active');
+            currentImage = (currentImage + 1) % images.length;
+            slides[currentImage].classList.add('active');
+        }
+
+        // Create floating particles
+        function createParticles() {
+            setInterval(() => {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                
+                if (Math.random() > 0.5) {
+                    particle.innerHTML = '❤️';
+                    particle.classList.add('heart-particle');
+                } else {
+                    particle.innerHTML = '✨';
+                    particle.classList.add('sparkle-particle');
+                }
+                
+                container.appendChild(particle);
+                
+                setTimeout(() => particle.remove(), 4000);
+            }, 400);
+        }
+
+        // Create click hearts
+        function createClickHearts(e) {
+            for (let i = 0; i < 5; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'click-heart';
+                heart.innerHTML = '❤️';
+                heart.style.left = (e.clientX + (Math.random() - 0.5) * 40) + 'px';
+                heart.style.top = (e.clientY + (Math.random() - 0.5) * 40) + 'px';
+                container.appendChild(heart);
+                
+                setTimeout(() => heart.remove(), 1500);
+            }
+        }
+
+        // Create confetti
+        function createConfetti() {
+            const colors = ['#FFD700', '#FF69B4', '#87CEEB', '#FF1493', '#9370DB', '#FFA500'];
+            
+            for (let i = 0; i < 80; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.top = '-10px';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                
+                container.appendChild(confetti);
+                
+                const speed = 2 + Math.random() * 4;
+                const animation = confetti.animate([
+                    { top: '-10px', opacity: 1 },
+                    { top: '110vh', opacity: 1 }
+                ], {
+                    duration: 5000 / speed,
+                    easing: 'linear'
+                });
+                
+                animation.onfinish = () => confetti.remove();
+            }
+        }
+
+        // Initialize progress dots
+        function initProgressDots() {
+            messages.forEach((_, index) => {
+                const dot = document.createElement('div');
+                dot.className = `dot ${index === 0 ? 'active' : ''}`;
+                dot.addEventListener('click', () => goToMessage(index));
+                progressDots.appendChild(dot);
+            });
+        }
+
+        // Update message display
+        function updateMessage() {
+            messageText.textContent = messages[currentMessage];
+            messageCounter.textContent = `${currentMessage + 1} / ${messages.length}`;
+            
+            // Update dots
+            document.querySelectorAll('.dot').forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentMessage);
+            });
+            
+            // Show hearts on last message
+            finalHearts.classList.toggle('hidden', currentMessage !== messages.length - 1);
+            
+            // Re-trigger animation
+            const messageBox = document.getElementById('messageBox');
+            messageBox.style.animation = 'none';
+            setTimeout(() => {
+                messageBox.style.animation = 'fadeIn 1s ease-out';
+            }, 10);
+        }
+
+        // Auto-play messages
+        function startAutoPlay() {
+            if (messageInterval) clearInterval(messageInterval);
+            
+            messageInterval = setInterval(() => {
+                if (autoPlay) {
+                    if (currentMessage < messages.length - 1) {
+                        currentMessage++;
+                        updateMessage();
+                    } else {
+                        // Replay after last message
+                        setTimeout(() => {
+                            currentMessage = 0;
+                            updateMessage();
+                        }, 2000);
+                    }
+                }
+            }, 3000);
+        }
+
+        // Navigation functions
+        function goToMessage(index) {
+            autoPlay = false;
+            pauseBtn.textContent = '▶️';
+            navTip.textContent = '▶️ Click play to resume auto-play';
+            currentMessage = index;
+            updateMessage();
+        }
+
+        function nextMessage() {
+            goToMessage((currentMessage + 1) % messages.length);
+        }
+
+        function prevMessage() {
+            goToMessage((currentMessage - 1 + messages.length) % messages.length);
+        }
+
+        function toggleAutoPlay() {
+            autoPlay = !autoPlay;
+            pauseBtn.textContent = autoPlay ? '⏸️' : '▶️';
+            navTip.textContent = autoPlay ? '⏸️ Click pause to navigate manually' : '▶️ Click play to resume auto-play';
+        }
+
+        function toggleMusic() {
+            if (musicPlaying) {
+                audio.pause();
+                musicBtn.textContent = '🔇';
+            } else {
+                audio.play();
+                musicBtn.textContent = '🔊';
+            }
+            musicPlaying = !musicPlaying;
+        }
+
+        function startExperience() {
+            initialScreen.classList.add('hidden');
+            messageScreen.classList.remove('hidden');
+            controls.classList.add('show');
+            
+            createConfetti();
+            updateMessage();
+            startAutoPlay();
+            
+            audio.play().catch(e => console.log("Audio play failed:", e));
+            musicPlaying = true;
+            musicBtn.textContent = '🔊';
+        }
+
+        // Event listeners
+        giftBtn.addEventListener('click', startExperience);
+        pauseBtn.addEventListener('click', toggleAutoPlay);
+        musicBtn.addEventListener('click', toggleMusic);
+        prevBtn.addEventListener('click', prevMessage);
+        nextBtn.addEventListener('click', nextMessage);
+        container.addEventListener('click', createClickHearts);
+
+        // Initialize
+        initSlideshow();
+        initProgressDots();
+        createParticles();
+        setInterval(rotateSlideshow, 4000);
+    </script>
+</body>
+</html>
